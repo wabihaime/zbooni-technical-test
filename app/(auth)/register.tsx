@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import {
   ActivityIndicator,
   Alert,
+  Dimensions,
   KeyboardAvoidingView,
   KeyboardTypeOptions,
   Platform,
@@ -20,6 +21,7 @@ import { FullButton } from "@/components/base/button";
 import Checkbox from "expo-checkbox";
 import { FormField } from "@/components/base/input/FormField";
 import { FormFieldConfig, RegisterFormValues } from "@/types/signup";
+import { CountryPicker } from "react-native-country-codes-picker";
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -40,6 +42,7 @@ const SignupSchema = Yup.object().shape({
 
 export default function RegisterScreen() {
   const [showPassword, setShowPassword] = useState(false);
+  const [openCountryPicker, setOpenCountryPicker] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
   const router = useRouter();
   const basicFields: FormFieldConfig<RegisterFormValues>[] = [
@@ -102,12 +105,8 @@ export default function RegisterScreen() {
 
     if (field === "countryCode") {
       return (
-        <TouchableOpacity
-          onPress={() =>
-            Alert.alert("Country Picker", "Open country picker here")
-          }
-        >
-          <AntDesign name="down" size={20} color="#888" />
+        <TouchableOpacity onPress={() => setOpenCountryPicker(true)}>
+          <Text style={styles.countryCodeText}>Select country code</Text>
         </TouchableOpacity>
       );
     }
@@ -218,6 +217,21 @@ export default function RegisterScreen() {
                     />
                   )}
                 </View>
+                <CountryPicker
+                  show={openCountryPicker}
+                  lang="en"
+                  pickerButtonOnPress={(item) => {
+                    setFieldValue("countryCode", item.dial_code);
+                    setOpenCountryPicker(false);
+                  }}
+                  searchMessage="Search for a country"
+                  style={{
+                    modal: {
+                      height: Dimensions.get("window").height * 0.8,
+                    },
+                  }}
+                  onBackdropPress={() => setOpenCountryPicker(false)}
+                />
               </View>
             )}
           </Formik>
