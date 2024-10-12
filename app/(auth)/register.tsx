@@ -3,6 +3,8 @@ import { AntDesign, Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import {
   ActivityIndicator,
+  Alert,
+  KeyboardTypeOptions,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -11,9 +13,10 @@ import {
 import * as Yup from "yup";
 import TextInput from "@/components/base/input/TextInput";
 import { Formik } from "formik";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { FullButton } from "@/components/base/button";
 import Checkbox from "expo-checkbox";
+import { FormField } from "@/components/base/input/FormField";
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -32,6 +35,45 @@ const SignupSchema = Yup.object().shape({
     .required("Phone number is required"),
 });
 
+const basicFields = [
+  {
+    name: "firstName",
+    placeholder: "First Name",
+  },
+  {
+    name: "lastName",
+    placeholder: "Last Name",
+  },
+  {
+    name: "email",
+    placeholder: "Email",
+
+    keyboardType: "email-address",
+    autoCapitalize: "none",
+  },
+  {
+    name: "password",
+    placeholder: "Password",
+    accessory: "passwordToggle",
+  },
+];
+
+const contactFields = [
+  {
+    name: "countryCode",
+    placeholder: "Select a country code",
+
+    readOnly: true,
+    accessory: "countryPicker",
+  },
+  {
+    name: "phoneNumber",
+    placeholder: "Phone Number",
+
+    keyboardType: "phone-pad",
+  },
+];
+
 export default function RegisterScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
@@ -46,6 +88,30 @@ export default function RegisterScreen() {
     phoneNumber: string;
   }) => {
     console.log("Values", values);
+  };
+
+  const renderAccessory = (field: string) => {
+    if (field === "password") {
+      return (
+        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+          <Feather name={showPassword ? "eye" : "eye-off"} size={24} />
+        </TouchableOpacity>
+      );
+    }
+
+    if (field === "countryCode") {
+      return (
+        <TouchableOpacity
+          onPress={() =>
+            Alert.alert("Country Picker", "Open country picker here")
+          }
+        >
+          <AntDesign name="down" size={20} color="#888" />
+        </TouchableOpacity>
+      );
+    }
+
+    return null;
   };
 
   return (
@@ -88,89 +154,35 @@ export default function RegisterScreen() {
           }) => (
             <View style={{ gap: 20 }}>
               <View style={styles.content}>
-                <TextInput
-                  placeholder="First Name"
-                  onChangeText={handleChange("firstName")}
-                  onBlur={handleBlur("firstName")}
-                  value={values.firstName}
-                />
-                {errors.firstName && touched.firstName && (
-                  <Text style={styles.errorText}>{errors.firstName}</Text>
-                )}
-
-                <TextInput
-                  placeholder="Last Name"
-                  onChangeText={handleChange("lastName")}
-                  onBlur={handleBlur("lastName")}
-                  value={values.lastName}
-                />
-                {errors.lastName && touched.lastName && (
-                  <Text style={styles.errorText}>{errors.lastName}</Text>
-                )}
-
-                <TextInput
-                  placeholder="Email"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  value={values.email}
-                />
-                {errors.email && touched.email && (
-                  <Text style={styles.errorText}>{errors.email}</Text>
-                )}
-
-                <TextInput
-                  placeholder="Password"
-                  secureTextEntry={!showPassword}
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  value={values.password}
-                  accessory={
-                    <TouchableOpacity
-                      onPress={() => setShowPassword(!showPassword)}
-                    >
-                      <Feather
-                        name={showPassword ? "eye" : "eye-off"}
-                        size={24}
-                      />
-                    </TouchableOpacity>
-                  }
-                />
-                {errors.password && touched.password && (
-                  <Text style={styles.errorText}>{errors.password}</Text>
-                )}
+                {basicFields.map((field) => (
+                  <FormField
+                    key={field.name}
+                    placeholder={field.placeholder}
+                    keyboardType={field.keyboardType as KeyboardTypeOptions}
+                    onChangeText={handleChange(field.name)}
+                    onBlur={handleBlur(field.name)}
+                    value={values[field.name]}
+                    accessory={renderAccessory(field.name) ?? null}
+                    error={errors[field.name]}
+                    touched={touched[field.name]}
+                  />
+                ))}
               </View>
               <View style={styles.content}>
-                <TextInput
-                  placeholder="Country Code"
-                  readOnly
-                  onChangeText={handleChange("countryCode")}
-                  onBlur={handleBlur("countryCode")}
-                  value={values.countryCode}
-                  accessory={
-                    <TouchableOpacity
-                      onPress={() => setShowPassword(!showPassword)}
-                    >
-                      <Text>
-                        {values.countryCode || "Select a country code"}
-                      </Text>
-                    </TouchableOpacity>
-                  }
-                />
-                {errors.phoneNumber && touched.phoneNumber && (
-                  <Text style={styles.errorText}>{errors.phoneNumber}</Text>
-                )}
-                <TextInput
-                  placeholder="Phone Number"
-                  keyboardType="phone-pad"
-                  onChangeText={handleChange("phoneNumber")}
-                  onBlur={handleBlur("phoneNumber")}
-                  value={values.phoneNumber}
-                />
-                {errors.phoneNumber && touched.phoneNumber && (
-                  <Text style={styles.errorText}>{errors.phoneNumber}</Text>
-                )}
+                {contactFields.map((field) => (
+                  <FormField
+                    key={field.name}
+                    readOnly={field.readOnly}
+                    placeholder={field.placeholder}
+                    keyboardType={field.keyboardType as KeyboardTypeOptions}
+                    onChangeText={handleChange(field.name)}
+                    onBlur={handleBlur(field.name)}
+                    value={values[field.name]}
+                    error={errors[field.name]}
+                    touched={touched[field.name]}
+                    accessory={renderAccessory(field.name) ?? null}
+                  />
+                ))}
               </View>
               <View style={styles.agreementSection}>
                 <Checkbox value={isAgreed} onValueChange={setIsAgreed} />
@@ -196,7 +208,7 @@ export default function RegisterScreen() {
                     title="Create Account"
                     variant="primary"
                     onPress={handleSubmit}
-                    disabled={!!errors.email || !!errors.password}
+                    disabled={!isAgreed || isSubmitting}
                   />
                 )}
               </View>

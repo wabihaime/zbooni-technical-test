@@ -1,6 +1,6 @@
 import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
 
-interface CustomTextInputProps extends TextInputProps {
+export interface CustomTextInputProps extends TextInputProps {
   accessory?: React.ReactNode;
 }
 

@@ -1,5 +1,5 @@
 // components/FormField.js
-import React from "react";
+import React, { Fragment } from "react";
 import {
   View,
   Text,
@@ -8,8 +8,9 @@ import {
   KeyboardTypeOptions,
   TextInputProps,
 } from "react-native";
-import TextInput from "@/components/base/input/TextInput"; // Ensure the path is correct
-import CustomTextInput from "@/components/base/input/TextInput";
+import TextInput, {
+  CustomTextInputProps,
+} from "@/components/base/input/TextInput"; // Ensure the path is correct
 
 export interface RegisterFormValues {
   firstName: string;
@@ -30,12 +31,7 @@ export interface FormFieldConfig {
   accessory?: "passwordToggle" | "countryPicker";
 }
 
-interface FormFieldProps extends TextInputProps {
-  placeholder: string;
-  type: "text" | "email" | "password" | "phone";
-  value: string;
-  onChangeText: (text: string) => void;
-  onBlur: () => void;
+interface FormFieldProps extends CustomTextInputProps {
   error?: string;
   touched?: boolean;
   accessory?: React.ReactNode;
@@ -44,7 +40,7 @@ interface FormFieldProps extends TextInputProps {
 
 export function FormField({
   placeholder,
-  type,
+
   value,
   onChangeText,
   onBlur,
@@ -55,21 +51,20 @@ export function FormField({
   ...rest
 }: FormFieldProps) {
   return (
-    <View style={styles.container}>
-      <CustomTextInput
+    <Fragment>
+      <TextInput
+        readOnly={readOnly}
         placeholder={placeholder}
-        secureTextEntry={type === "password"}
-        value={value}
         onChangeText={onChangeText}
         onBlur={onBlur}
+        value={value}
         accessory={accessory}
-        editable={!readOnly}
-        accessibilityLabel={placeholder}
-        accessibilityHint={`Input for ${placeholder}`}
         {...rest}
       />
-      {error && touched && <Text style={styles.errorText}>{error}</Text>}
-    </View>
+      <View style={styles.errorContainer}>
+        {!!error && touched && <Text style={styles.errorText}>{error}</Text>}
+      </View>
+    </Fragment>
   );
 }
 
@@ -82,4 +77,5 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginLeft: 5,
   },
+  errorContainer: { height: 20 },
 });
