@@ -4,7 +4,10 @@ import { useRouter } from "expo-router";
 import {
   ActivityIndicator,
   Alert,
+  KeyboardAvoidingView,
   KeyboardTypeOptions,
+  Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -127,94 +130,99 @@ export default function RegisterScreen() {
           )
         }
       />
-      <View>
-        <Formik
-          initialValues={{
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: "",
-            countryCode: "",
-            phoneNumber: "",
-          }}
-          validationSchema={SignupSchema}
-          onSubmit={handleSignup}
-        >
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            setFieldValue,
-            values,
-            errors,
-            touched,
-            isSubmitting,
-          }) => (
-            <View style={{ gap: 20 }}>
-              <View style={styles.content}>
-                {basicFields.map((field) => (
-                  <FormField
-                    key={field.name}
-                    placeholder={field.placeholder}
-                    keyboardType={field.keyboardType as KeyboardTypeOptions}
-                    onChangeText={handleChange(field.name)}
-                    onBlur={handleBlur(field.name)}
-                    value={values[field.name]}
-                    accessory={renderAccessory(field.name) ?? null}
-                    error={errors[field.name]}
-                    touched={touched[field.name]}
-                    secureTextEntry={field.secureTextEntry}
-                  />
-                ))}
-              </View>
-              <View style={styles.content}>
-                {contactFields.map((field) => (
-                  <FormField
-                    key={field.name}
-                    readOnly={field.readOnly}
-                    placeholder={field.placeholder}
-                    keyboardType={field.keyboardType as KeyboardTypeOptions}
-                    onChangeText={handleChange(field.name)}
-                    onBlur={handleBlur(field.name)}
-                    value={values[field.name]}
-                    error={errors[field.name]}
-                    touched={touched[field.name]}
-                    accessory={renderAccessory(field.name) ?? null}
-                  />
-                ))}
-              </View>
-              <View style={styles.agreementSection}>
-                <Checkbox value={isAgreed} onValueChange={setIsAgreed} />
-                <View>
-                  <Text>By creating an account, you agree to the</Text>
-                  <View style={styles.legalLinks}>
-                    <TouchableOpacity>
-                      <Text style={styles.link}>Terms of Service</Text>
-                    </TouchableOpacity>
-                    <Text>&</Text>
-                    <TouchableOpacity>
-                      <Text style={styles.link}>Privacy Policy</Text>
-                    </TouchableOpacity>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={{ flex: 1 }}
+      >
+        <ScrollView>
+          <Formik
+            initialValues={{
+              firstName: "",
+              lastName: "",
+              email: "",
+              password: "",
+              countryCode: "",
+              phoneNumber: "",
+            }}
+            validationSchema={SignupSchema}
+            onSubmit={handleSignup}
+          >
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              setFieldValue,
+              values,
+              errors,
+              touched,
+              isSubmitting,
+            }) => (
+              <View style={{ gap: 20 }}>
+                <View style={styles.content}>
+                  {basicFields.map((field) => (
+                    <FormField
+                      key={field.name}
+                      placeholder={field.placeholder}
+                      keyboardType={field.keyboardType as KeyboardTypeOptions}
+                      onChangeText={handleChange(field.name)}
+                      onBlur={handleBlur(field.name)}
+                      value={values[field.name]}
+                      accessory={renderAccessory(field.name) ?? null}
+                      error={errors[field.name]}
+                      touched={touched[field.name]}
+                      secureTextEntry={field.secureTextEntry}
+                    />
+                  ))}
+                </View>
+                <View style={styles.content}>
+                  {contactFields.map((field) => (
+                    <FormField
+                      key={field.name}
+                      readOnly={field.readOnly}
+                      placeholder={field.placeholder}
+                      keyboardType={field.keyboardType as KeyboardTypeOptions}
+                      onChangeText={handleChange(field.name)}
+                      onBlur={handleBlur(field.name)}
+                      value={values[field.name]}
+                      error={errors[field.name]}
+                      touched={touched[field.name]}
+                      accessory={renderAccessory(field.name) ?? null}
+                    />
+                  ))}
+                </View>
+                <View style={styles.agreementSection}>
+                  <Checkbox value={isAgreed} onValueChange={setIsAgreed} />
+                  <View>
+                    <Text>By creating an account, you agree to the</Text>
+                    <View style={styles.legalLinks}>
+                      <TouchableOpacity>
+                        <Text style={styles.link}>Terms of Service</Text>
+                      </TouchableOpacity>
+                      <Text>&</Text>
+                      <TouchableOpacity>
+                        <Text style={styles.link}>Privacy Policy</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
-              </View>
 
-              <View style={styles.submitContainer}>
-                {isSubmitting ? (
-                  <ActivityIndicator />
-                ) : (
-                  <FullButton
-                    title="Create Account"
-                    variant="primary"
-                    onPress={handleSubmit}
-                    disabled={!isAgreed || isSubmitting}
-                  />
-                )}
+                <View style={styles.submitContainer}>
+                  {isSubmitting ? (
+                    <ActivityIndicator />
+                  ) : (
+                    <FullButton
+                      title="Create Account"
+                      variant="primary"
+                      onPress={handleSubmit}
+                      disabled={!isAgreed && isSubmitting}
+                    />
+                  )}
+                </View>
               </View>
-            </View>
-          )}
-        </Formik>
-      </View>
+            )}
+          </Formik>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </>
   );
 }
