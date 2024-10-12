@@ -108,7 +108,7 @@ export default function LoginScreen() {
                     title="Login"
                     variant="primary"
                     onPress={handleSubmit}
-                    disabled={errors.email || errors.password}
+                    disabled={!!errors.email || !!errors.password}
                   />
                 )}
               </View>
