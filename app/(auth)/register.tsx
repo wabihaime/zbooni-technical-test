@@ -13,6 +13,7 @@ import TextInput from "@/components/base/input/TextInput";
 import { Formik } from "formik";
 import { useState } from "react";
 import { FullButton } from "@/components/base/button";
+import Checkbox from "expo-checkbox";
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -33,6 +34,7 @@ const SignupSchema = Yup.object().shape({
 
 export default function RegisterScreen() {
   const [showPassword, setShowPassword] = useState(false);
+  const [isAgreed, setIsAgreed] = useState(false);
   const router = useRouter();
 
   const handleSignup = async (values: {
@@ -138,27 +140,6 @@ export default function RegisterScreen() {
                 {errors.password && touched.password && (
                   <Text style={styles.errorText}>{errors.password}</Text>
                 )}
-
-                {/* Country Code Field
-              <TouchableOpacity
-                style={styles.countryCodeContainer}
-                onPress={() =>
-                  router.push("/country-picker", { setFieldValue })
-                }
-              >
-                <Text
-                  style={
-                    values.countryCode
-                      ? styles.countryCodeText
-                      : styles.placeholderText
-                  }
-                >
-                  {values.countryCode || "Select Country Code"}
-                </Text>
-              </TouchableOpacity>
-              {errors.countryCode && touched.countryCode && (
-                <Text style={styles.errorText}>{errors.countryCode}</Text>
-              )} */}
               </View>
               <View style={styles.content}>
                 <TextInput
@@ -191,8 +172,23 @@ export default function RegisterScreen() {
                   <Text style={styles.errorText}>{errors.phoneNumber}</Text>
                 )}
               </View>
+              <View style={styles.agreementSection}>
+                <Checkbox value={isAgreed} onValueChange={setIsAgreed} />
+                <View>
+                  <Text>By creating an account, you agree to the</Text>
+                  <View style={styles.legalLinks}>
+                    <TouchableOpacity>
+                      <Text style={styles.link}>Terms of Service</Text>
+                    </TouchableOpacity>
+                    <Text>&</Text>
+                    <TouchableOpacity>
+                      <Text style={styles.link}>Privacy Policy</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
 
-              <View>
+              <View style={styles.submitContainer}>
                 {isSubmitting ? (
                   <ActivityIndicator />
                 ) : (
@@ -236,6 +232,20 @@ const styles = StyleSheet.create({
   },
   placeholderText: {
     fontSize: 16,
+    color: "#848484",
+  },
+  agreementSection: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 8,
+  },
+  legalLinks: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  link: {
     color: "#848484",
   },
 });
