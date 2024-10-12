@@ -1,27 +1,22 @@
 // components/FormField.js
 import React, { Fragment } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  KeyboardTypeOptions,
-  TextInputProps,
-} from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import TextInput, {
   CustomTextInputProps,
 } from "@/components/base/input/TextInput"; // Ensure the path is correct
 
-interface FormFieldProps extends CustomTextInputProps {
+interface FormFieldProps<T> extends CustomTextInputProps {
+  placeholder: string;
+  value: string;
+  onBlur: (e: any) => void;
   error?: string;
   touched?: boolean;
   accessory?: React.ReactNode;
   readOnly?: boolean;
 }
 
-export function FormField({
+export function FormField<T extends {}>({
   placeholder,
-
   value,
   onChangeText,
   onBlur,
@@ -30,7 +25,7 @@ export function FormField({
   accessory,
   readOnly = false,
   ...rest
-}: FormFieldProps) {
+}: FormFieldProps<T>) {
   return (
     <Fragment>
       <TextInput

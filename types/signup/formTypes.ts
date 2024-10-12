@@ -6,3 +6,8 @@ export interface RegisterFormValues {
   countryCode: string;
   phoneNumber: string;
 }
+
+export interface LoginFormValues {
+  email: string;
+  password: string;
+}

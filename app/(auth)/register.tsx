@@ -11,13 +11,12 @@ import {
   View,
 } from "react-native";
 import * as Yup from "yup";
-import TextInput from "@/components/base/input/TextInput";
 import { Formik } from "formik";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { FullButton } from "@/components/base/button";
 import Checkbox from "expo-checkbox";
 import { FormField } from "@/components/base/input/FormField";
-import { FormFieldConfig } from "@/types/signup/formFieldTypes";
+import { FormFieldConfig, RegisterFormValues } from "@/types/signup";
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -36,50 +35,48 @@ const SignupSchema = Yup.object().shape({
     .required("Phone number is required"),
 });
 
-const basicFields: FormFieldConfig[] = [
-  {
-    name: "firstName",
-    placeholder: "First Name",
-  },
-  {
-    name: "lastName",
-    placeholder: "Last Name",
-  },
-  {
-    name: "email",
-    placeholder: "Email",
-
-    keyboardType: "email-address",
-    autoCapitalize: "none",
-  },
-  {
-    name: "password",
-    placeholder: "Password",
-    accessory: "passwordToggle",
-  },
-];
-
-const contactFields: FormFieldConfig[] = [
-  {
-    name: "countryCode",
-    placeholder: "Select a country code",
-
-    readOnly: true,
-    accessory: "countryPicker",
-  },
-  {
-    name: "phoneNumber",
-    placeholder: "Phone Number",
-
-    keyboardType: "phone-pad",
-  },
-];
-
 export default function RegisterScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
   const router = useRouter();
+  const basicFields: FormFieldConfig<RegisterFormValues>[] = [
+    {
+      name: "firstName",
+      placeholder: "First Name",
+    },
+    {
+      name: "lastName",
+      placeholder: "Last Name",
+    },
+    {
+      name: "email",
+      placeholder: "Email",
+      keyboardType: "email-address",
+      autoCapitalize: "none",
+    },
+    {
+      name: "password",
+      placeholder: "Password",
+      accessory: "passwordToggle",
+      secureTextEntry: !showPassword,
+    },
+  ];
 
+  const contactFields: FormFieldConfig<RegisterFormValues>[] = [
+    {
+      name: "countryCode",
+      placeholder: "Select a country code",
+
+      readOnly: true,
+      accessory: "countryPicker",
+    },
+    {
+      name: "phoneNumber",
+      placeholder: "Phone Number",
+
+      keyboardType: "phone-pad",
+    },
+  ];
   const handleSignup = async (values: {
     firstName: string;
     lastName: string;
@@ -166,6 +163,7 @@ export default function RegisterScreen() {
                     accessory={renderAccessory(field.name) ?? null}
                     error={errors[field.name]}
                     touched={touched[field.name]}
+                    secureTextEntry={field.secureTextEntry}
                   />
                 ))}
               </View>

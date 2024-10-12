@@ -1,6 +1,8 @@
 import { FullButton } from "@/components/base/button";
 import { Header } from "@/components/base/header";
-import CustomTextInput from "@/components/base/input/TextInput";
+import { FormField } from "@/components/base/input/FormField";
+import { LoginFormValues } from "@/types/signup";
+import { FormFieldConfig } from "@/types/signup/formFieldTypes";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Formik } from "formik";
@@ -8,7 +10,6 @@ import React, { useState } from "react";
 import {
   ActivityIndicator,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -27,8 +28,39 @@ export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
+  const fields: FormFieldConfig<LoginFormValues>[] = [
+    {
+      name: "email",
+      placeholder: "Email",
+      keyboardType: "email-address",
+      autoCapitalize: "none",
+    },
+    {
+      name: "password",
+      placeholder: "Password",
+      accessory: "passwordToggle",
+      secureTextEntry: !showPassword,
+    },
+  ];
+
   const handleLogin = async (values: { email: string; password: string }) => {
     console.log("Values", values);
+  };
+
+  const renderAccessory = (fieldName: keyof LoginFormValues) => {
+    if (fieldName === "password") {
+      return (
+        <TouchableOpacity
+          onPress={() => setShowPassword(!showPassword)}
+          accessibilityLabel={showPassword ? "Hide password" : "Show password"}
+          accessibilityRole="button"
+        >
+          <Feather name={showPassword ? "eye" : "eye-off"} size={24} />
+        </TouchableOpacity>
+      );
+    }
+
+    return null;
   };
 
   return (
@@ -63,42 +95,19 @@ export default function LoginScreen() {
           }) => (
             <>
               <View style={styles.content}>
-                <CustomTextInput
-                  placeholder="Email"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  value={values.email}
-                />
-                <View style={styles.errorContainer}>
-                  {errors.email && touched.email && (
-                    <Text style={styles.errorText}>{errors.email}</Text>
-                  )}
-                </View>
-
-                <CustomTextInput
-                  placeholder="Password"
-                  secureTextEntry={!showPassword}
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  value={values.password}
-                  accessory={
-                    <TouchableOpacity
-                      onPress={() => setShowPassword(!showPassword)}
-                    >
-                      <Feather
-                        name={showPassword ? "eye" : "eye-off"}
-                        size={24}
-                      />
-                    </TouchableOpacity>
-                  }
-                />
-                <View style={styles.errorContainer}>
-                  {errors.password && touched.password && (
-                    <Text style={styles.errorText}>{errors.password}</Text>
-                  )}
-                </View>
+                {fields.map((field) => (
+                  <FormField
+                    key={field.name}
+                    placeholder={field.placeholder}
+                    onChangeText={handleChange(field.name)}
+                    onBlur={handleBlur(field.name)}
+                    value={values[field.name]}
+                    accessory={renderAccessory(field.name) ?? null}
+                    error={errors[field.name]}
+                    touched={touched[field.name]}
+                    secureTextEntry={field.secureTextEntry}
+                  />
+                ))}
               </View>
               <View style={styles.submitContainer}>
                 {isSubmitting ? (
