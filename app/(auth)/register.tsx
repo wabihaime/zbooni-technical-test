@@ -17,6 +17,7 @@ import { Fragment, useState } from "react";
 import { FullButton } from "@/components/base/button";
 import Checkbox from "expo-checkbox";
 import { FormField } from "@/components/base/input/FormField";
+import { FormFieldConfig } from "@/types/signup/formFieldTypes";
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -35,7 +36,7 @@ const SignupSchema = Yup.object().shape({
     .required("Phone number is required"),
 });
 
-const basicFields = [
+const basicFields: FormFieldConfig[] = [
   {
     name: "firstName",
     placeholder: "First Name",
@@ -58,7 +59,7 @@ const basicFields = [
   },
 ];
 
-const contactFields = [
+const contactFields: FormFieldConfig[] = [
   {
     name: "countryCode",
     placeholder: "Select a country code",

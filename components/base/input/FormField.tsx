@@ -12,25 +12,6 @@ import TextInput, {
   CustomTextInputProps,
 } from "@/components/base/input/TextInput"; // Ensure the path is correct
 
-export interface RegisterFormValues {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  countryCode: string;
-  phoneNumber: string;
-}
-
-export interface FormFieldConfig {
-  name: keyof RegisterFormValues;
-  placeholder: string;
-  type: "text" | "email" | "password" | "phone";
-  keyboardType?: KeyboardTypeOptions;
-  autoCapitalize?: "none" | "sentences" | "words" | "characters";
-  readOnly?: boolean;
-  accessory?: "passwordToggle" | "countryPicker";
-}
-
 interface FormFieldProps extends CustomTextInputProps {
   error?: string;
   touched?: boolean;
