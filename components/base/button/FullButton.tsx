@@ -1,16 +1,26 @@
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { ButtonProps, StyleSheet, Text, TouchableOpacity } from "react-native";
 
-interface FullButtonProps {
+interface FullButtonProps extends ButtonProps {
   title: string;
   variant: "primary" | "secondary";
   onPress: () => void;
 }
 
-export function FullButton({ title, variant, onPress }: FullButtonProps) {
+export function FullButton({
+  title,
+  variant,
+  onPress,
+  disabled,
+}: FullButtonProps) {
   return (
     <TouchableOpacity
-      style={StyleSheet.flatten([buttonStyle.base, buttonStyle[variant]])}
+      style={StyleSheet.flatten([
+        buttonStyle.base,
+        buttonStyle[variant],
+        { opacity: disabled ? 0.5 : 1 },
+      ])}
       onPress={onPress}
+      disabled={disabled}
     >
       <Text style={StyleSheet.flatten([textStyle.base, textStyle[variant]])}>
         {title}
