@@ -21,22 +21,25 @@ export default function CustomTextInput({
 }
 
 const styles = StyleSheet.create({
-  container: { flexDirection: "row", alignItems: "stretch" },
+  container: {
+    flexDirection: "row",
+    alignItems: "stretch",
+    borderBottomWidth: 1,
+    borderBottomColor: "#848484",
+  },
   input: {
     height: 50,
     alignItems: "center",
     flex: 1,
     borderRadius: 8,
     padding: 12,
-    marginBottom: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#848484",
+    marginBottom: 8,
+
     fontSize: 16,
   },
   accessory: {
-    marginLeft: 8,
+    paddingHorizontal: 12,
     justifyContent: "center",
     alignItems: "center",
-    width: 64,
   },
 });

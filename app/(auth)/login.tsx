@@ -34,7 +34,7 @@ export default function LoginScreen() {
   return (
     <>
       <Header
-        title="Login"
+        title="Welcome back"
         leftOption={
           router.canGoBack() && (
             <TouchableOpacity
