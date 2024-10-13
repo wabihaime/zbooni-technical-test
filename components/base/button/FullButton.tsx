@@ -8,7 +8,7 @@ interface FullButtonProps extends ButtonProps {
 
 export function FullButton({
   title,
-  variant,
+  variant = "primary",
   onPress,
   disabled,
 }: FullButtonProps) {

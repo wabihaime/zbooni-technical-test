@@ -9,7 +9,7 @@ import React from "react";
 
 const tabs = [
   {
-    name: "index",
+    name: "create",
     title: "Create",
     icon: ({ color }: { color: string }) => (
       <MaterialCommunityIcons
@@ -51,14 +51,23 @@ const tabs = [
 
 export default function HomeLayout() {
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: "blue" }}>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: "#C0FF20",
+        tabBarStyle: {
+          backgroundColor: "#101820",
+        },
+        tabBarShowLabel: false,
+      }}
+    >
       {tabs.map((tab) => {
         const Icon = tab.icon;
         return (
           <Tabs.Screen
+            key={tab.name}
             name={tab.name}
             options={{
-              title: tab.title,
+              headerShown: false,
               tabBarIcon: ({ color }) => <Icon color={color} />,
             }}
           />
