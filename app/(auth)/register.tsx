@@ -22,6 +22,7 @@ import Checkbox from "expo-checkbox";
 import { FormField } from "@/components/base/input/FormField";
 import { FormFieldConfig, RegisterFormValues } from "@/types/signup";
 import { CountryPicker } from "react-native-country-codes-picker";
+import { getBearerToken } from "@/src/api/auth";
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -83,6 +84,7 @@ export default function RegisterScreen() {
       keyboardType: "phone-pad",
     },
   ];
+
   const handleSignup = async (values: {
     firstName: string;
     lastName: string;
@@ -91,7 +93,12 @@ export default function RegisterScreen() {
     countryCode: string;
     phoneNumber: string;
   }) => {
-    console.log("Values", values);
+    try {
+      const token = await getBearerToken();
+      console.log(token);
+    } catch (error: any) {
+      Alert.alert("Error", error.message);
+    }
   };
 
   const renderAccessory = (field: string) => {
