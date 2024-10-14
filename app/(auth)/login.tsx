@@ -1,6 +1,7 @@
 import { FullButton } from "@/components/base/button";
 import { Header } from "@/components/base/header";
 import { FormField } from "@/components/base/input/FormField";
+import { loginUser } from "@/src/api/login";
 import { LoginFormValues } from "@/types/signup";
 import { FormFieldConfig } from "@/types/signup/formFieldTypes";
 import { AntDesign, Feather } from "@expo/vector-icons";
@@ -9,6 +10,8 @@ import { Formik } from "formik";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
+  Platform,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -43,8 +46,36 @@ export default function LoginScreen() {
     },
   ];
 
-  const handleLogin = async (values: { email: string; password: string }) => {
+  const handleLogin = async (
+    values: { email: string; password: string },
+    { setErrors }: { setErrors: (errs: Partial<LoginFormValues>) => void }
+  ) => {
     console.log("Values", values);
+    try {
+      const response = await loginUser({
+        username: values.email,
+        password: values.password,
+      });
+      console.log("Response", response);
+
+      if (response.status === 200) {
+        if (Platform.OS === "web") {
+          window.alert("Logged in successfully");
+          router.replace("/(home)/create");
+        } else {
+          Alert.alert("Logged in successfully", "", [
+            { text: "OK", onPress: () => router.replace("/(home)/create") },
+          ]);
+        }
+      } else {
+        setErrors({
+          password:
+            response?.data?.error_description || "Something went wrong.",
+        });
+      }
+    } catch (error) {
+      console.error("Error logging in", error);
+    }
   };
 
   const renderAccessory = (fieldName: keyof LoginFormValues) => {
