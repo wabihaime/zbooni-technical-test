@@ -49,7 +49,11 @@ export default function RegisterScreen() {
   const [isAgreed, setIsAgreed] = useState(false);
   const router = useRouter();
   const { setUser } = useContext(UserContext);
-  const { t } = useTranslation();
+  const { i18n, t } = useTranslation();
+
+  const setLanguage = (lang: "en" | "ar") => {
+    i18n.changeLanguage(lang);
+  };
 
   const basicFields: FormFieldConfig<RegisterFormValues>[] = [
     {
@@ -227,18 +231,12 @@ export default function RegisterScreen() {
                 </View>
                 <View style={styles.agreementSection}>
                   <Checkbox value={isAgreed} onValueChange={setIsAgreed} />
-                  <View>
-                    <Text>By creating an account, you agree to the</Text>
-                    <View style={styles.legalLinks}>
-                      <TouchableOpacity>
-                        <Text style={styles.link}>Terms of Service</Text>
-                      </TouchableOpacity>
-                      <Text>&</Text>
-                      <TouchableOpacity>
-                        <Text style={styles.link}>Privacy Policy</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
+
+                  <Text style={styles.agreementText}>
+                    {t(
+                      "By creating an account you agree to the Terms and Conditions & Privacy Policy"
+                    )}
+                  </Text>
                 </View>
 
                 <View style={styles.submitContainer}>
@@ -271,6 +269,15 @@ export default function RegisterScreen() {
               </View>
             )}
           </Formik>
+          <View style={styles.languages}>
+            <TouchableOpacity onPress={() => setLanguage("en")}>
+              <Text>EN</Text>
+            </TouchableOpacity>
+            <View style={{ width: 1, backgroundColor: "#848484" }} />
+            <TouchableOpacity onPress={() => setLanguage("ar")}>
+              <Text>AR</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </>
@@ -308,13 +315,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 8,
+    paddingHorizontal: 64,
   },
-  legalLinks: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
+  agreementText: {
+    textAlign: "left",
   },
   link: {
     color: "#848484",
+  },
+  languages: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 20,
   },
 });
