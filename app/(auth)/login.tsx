@@ -7,7 +7,7 @@ import { FormFieldConfig } from "@/types/signup/formFieldTypes";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Formik } from "formik";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -18,6 +18,7 @@ import {
 } from "react-native";
 import * as Yup from "yup";
 import * as SecureStore from "expo-secure-store";
+import { UserContext } from "@/src/contexts";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -31,6 +32,7 @@ const LoginSchema = Yup.object().shape({
 export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const { setUser } = useContext(UserContext);
 
   const fields: FormFieldConfig<LoginFormValues>[] = [
     {
@@ -58,6 +60,7 @@ export default function LoginScreen() {
       });
 
       if (response.status === 200) {
+        setUser(response.data);
         await SecureStore.setItemAsync(
           "access_token",
           response.data.access_token

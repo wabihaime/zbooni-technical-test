@@ -1,6 +1,9 @@
-import React from "react";
+import { UserContext } from "@/src/contexts";
+import React, { useContext } from "react";
 import { Text } from "react-native";
 
 export default function More() {
-  return <Text>More</Text>;
+  const { user } = useContext(UserContext);
+  console.log("User", user);
+  return <Text>{user ? `Welcome, ${user.email ?? "User"}` : "Welcome"}</Text>;
 }

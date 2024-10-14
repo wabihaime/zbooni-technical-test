@@ -16,13 +16,14 @@ import {
 } from "react-native";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FullButton } from "@/components/base/button";
 import Checkbox from "expo-checkbox";
 import { FormField } from "@/components/base/input/FormField";
 import { FormFieldConfig, RegisterFormValues } from "@/types/signup";
 import { CountryPicker } from "react-native-country-codes-picker";
 import { registerUser } from "@/src/api/register";
+import { UserContext } from "@/src/contexts";
 
 const SignupSchema = Yup.object().shape({
   first_name: Yup.string().required("First name is required"),
@@ -46,6 +47,8 @@ export default function RegisterScreen() {
   const [openCountryPicker, setOpenCountryPicker] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
   const router = useRouter();
+  const { setUser } = useContext(UserContext);
+
   const basicFields: FormFieldConfig<RegisterFormValues>[] = [
     {
       name: "first_name",
@@ -105,8 +108,8 @@ export default function RegisterScreen() {
         phone_number: values.countryCode + values.phone_number,
       });
 
-      console.log("RESPONSE", response);
       if (response.status === 201) {
+        setUser(response.data);
         if (Platform.OS === "web") {
           window.alert("Account Created");
           router.replace("/(home)/create");
