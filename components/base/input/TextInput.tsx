@@ -1,3 +1,4 @@
+import { isRTL } from "@/src/utils/isRTL";
 import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
 
 export interface CustomTextInputProps extends TextInputProps {
@@ -34,8 +35,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     marginBottom: 8,
-
     fontSize: 16,
+    textAlign: isRTL ? "right" : "left",
+    writingDirection: isRTL ? "rtl" : "ltr",
   },
   accessory: {
     paddingHorizontal: 12,

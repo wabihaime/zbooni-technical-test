@@ -25,6 +25,7 @@ import { CountryPicker } from "react-native-country-codes-picker";
 import { registerUser } from "@/src/api/register";
 import { UserContext } from "@/src/contexts";
 import { useTranslation } from "react-i18next";
+import { isRTL } from "@/src/utils/isRTL";
 
 const SignupSchema = Yup.object().shape({
   first_name: Yup.string().required("First name is required"),
@@ -49,11 +50,7 @@ export default function RegisterScreen() {
   const [isAgreed, setIsAgreed] = useState(false);
   const router = useRouter();
   const { setUser } = useContext(UserContext);
-  const { i18n, t } = useTranslation();
-
-  const setLanguage = (lang: "en" | "ar") => {
-    i18n.changeLanguage(lang);
-  };
+  const { t } = useTranslation();
 
   const basicFields: FormFieldConfig<RegisterFormValues>[] = [
     {
@@ -164,7 +161,7 @@ export default function RegisterScreen() {
               style={{ alignItems: "center" }}
               onPress={() => router.back()}
             >
-              <AntDesign name="left" size={24} />
+              <AntDesign name={isRTL ? "right" : "left"} size={24} />
             </TouchableOpacity>
           )
         }
@@ -269,15 +266,6 @@ export default function RegisterScreen() {
               </View>
             )}
           </Formik>
-          <View style={styles.languages}>
-            <TouchableOpacity onPress={() => setLanguage("en")}>
-              <Text>EN</Text>
-            </TouchableOpacity>
-            <View style={{ width: 1, backgroundColor: "#848484" }} />
-            <TouchableOpacity onPress={() => setLanguage("ar")}>
-              <Text>AR</Text>
-            </TouchableOpacity>
-          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </>

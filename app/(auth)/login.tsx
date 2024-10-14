@@ -20,6 +20,7 @@ import * as Yup from "yup";
 import * as SecureStore from "expo-secure-store";
 import { UserContext } from "@/src/contexts";
 import { useTranslation } from "react-i18next";
+import { isRTL } from "@/src/utils/isRTL";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -111,7 +112,7 @@ export default function LoginScreen() {
               style={{ alignItems: "center" }}
               onPress={() => router.back()}
             >
-              <AntDesign name="left" size={24} />
+              <AntDesign name={isRTL ? "right" : "left"} size={24} />
             </TouchableOpacity>
           )
         }

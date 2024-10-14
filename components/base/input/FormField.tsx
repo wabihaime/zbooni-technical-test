@@ -4,6 +4,7 @@ import { View, Text, StyleSheet } from "react-native";
 import TextInput, {
   CustomTextInputProps,
 } from "@/components/base/input/TextInput"; // Ensure the path is correct
+import { isRTL } from "@/src/utils/isRTL";
 
 interface FormFieldProps<T> extends CustomTextInputProps {
   placeholder: string;
@@ -53,6 +54,12 @@ const styles = StyleSheet.create({
     color: "red",
     marginTop: 5,
     marginLeft: 5,
+    textAlign: isRTL ? "right" : "left",
   },
-  errorContainer: { height: 20 },
+  errorContainer: {
+    height: 20,
+    flexDirection: "row",
+    justifyContent: isRTL ? "flex-end" : "flex-start",
+    width: "100%",
+  },
 });
