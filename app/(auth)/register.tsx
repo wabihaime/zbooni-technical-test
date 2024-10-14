@@ -105,6 +105,7 @@ export default function RegisterScreen() {
         phone_number: values.countryCode + values.phone_number,
       });
 
+      console.log("RESPONSE", response);
       if (response.status === 201) {
         if (Platform.OS === "web") {
           window.alert("Account Created");
@@ -117,10 +118,10 @@ export default function RegisterScreen() {
           );
         }
       } else {
-        setErrors(response.data);
+        setErrors(response?.data);
       }
     } catch (error: any) {
-      console.error("Registration Error Response:", error.response.data);
+      console.error("Registration Error Response:", error);
     }
   };
 

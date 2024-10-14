@@ -1,4 +1,5 @@
 import apiClient from ".";
+import * as SecureStore from "expo-secure-store";
 
 const CLIENT_ID = process.env.EXPO_PUBLIC_SIGNUP_CLIENTID;
 const CLIENT_SECRET = process.env.EXPO_PUBLIC_SIGNUP_SECRET;
@@ -11,6 +12,7 @@ export const getBearerToken = async (): Promise<string> => {
       grant_type: "client_credentials",
     });
 
+    await SecureStore.setItemAsync("access_token", response?.data.access_token);
     return response.data.access_token;
   } catch (error: any) {
     if (error.response) {

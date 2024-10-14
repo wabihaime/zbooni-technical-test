@@ -22,10 +22,11 @@ export const registerUser = async (userData: RegisterRequest) => {
       },
     });
 
+    console.log("RESPONSE API", response);
     return response;
   } catch (error: any) {
     if (error.response) {
-      console.error("Registration Error Response:", error.response.data);
+      console.error("Registration Error Response api:", error.response.data);
     }
 
     return error.response;
