@@ -1,9 +1,8 @@
-// components/FormField.js
 import React, { Fragment } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import TextInput, {
   CustomTextInputProps,
-} from "@/components/base/input/TextInput"; // Ensure the path is correct
+} from "@/components/base/input/TextInput";
 import { isRTL } from "@/src/utils/isRTL";
 
 interface FormFieldProps<T> extends CustomTextInputProps {

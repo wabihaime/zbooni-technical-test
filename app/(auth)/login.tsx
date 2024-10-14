@@ -1,13 +1,13 @@
 import { FullButton } from "@/components/base/button";
 import { Header } from "@/components/base/header";
-import { FormField } from "@/components/base/input/FormField";
+
 import { loginUser } from "@/src/api/login";
 import { LoginFormValues } from "@/types/auth";
 import { FormFieldConfig } from "@/types/auth/formFieldTypes";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Formik } from "formik";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -21,6 +21,7 @@ import * as SecureStore from "expo-secure-store";
 import { UserContext } from "@/src/contexts";
 import { useTranslation } from "react-i18next";
 import { isRTL } from "@/src/utils/isRTL";
+import { FormField } from "@/components/base/input";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
