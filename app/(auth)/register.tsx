@@ -20,7 +20,7 @@ import { useContext, useState } from "react";
 import { FullButton } from "@/components/base/button";
 import Checkbox from "expo-checkbox";
 import { FormField } from "@/components/base/input/FormField";
-import { FormFieldConfig, RegisterFormValues } from "@/types/signup";
+import { FormFieldConfig, RegisterFormValues } from "@/types/auth";
 import { CountryPicker } from "react-native-country-codes-picker";
 import { registerUser } from "@/src/api/register";
 import { UserContext } from "@/src/contexts";

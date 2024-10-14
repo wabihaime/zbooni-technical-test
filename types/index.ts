@@ -1,3 +1,3 @@
-import * as signup from "./signup";
+import * as signup from "./auth";
 
 export { signup };

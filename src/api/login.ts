@@ -1,4 +1,4 @@
-import { LoginFormValues } from "@/types/signup";
+import { LoginFormValues } from "@/types/auth";
 import apiClient from ".";
 
 const CLIENT_ID = process.env.EXPO_PUBLIC_LOGIN_CLIENTID;
