@@ -1,12 +1,26 @@
 import { FullButton } from "@/components/base/button";
 import { Header } from "@/components/base/header";
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function Create() {
   return (
     <>
-      <Header title="New Invoice" />
+      <Header
+        title="New Invoice"
+        rightOption={
+          <TouchableOpacity>
+            <Text>Log out</Text>
+          </TouchableOpacity>
+        }
+      />
       <View style={styles.container}>
         <Image
           source={require("../../assets/images/graphics/new-invoice-graphic.png")}

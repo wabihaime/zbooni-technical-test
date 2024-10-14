@@ -1,8 +1,21 @@
 import { FullButton } from "@/components/base/button";
 import { useRouter } from "expo-router";
+import { useEffect } from "react";
 import { Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import * as SecureStore from "expo-secure-store";
 
 export default function WelcomeScreen() {
+  useEffect(() => {
+    checkToken();
+  }, []);
+
+  const checkToken = async () => {
+    const token = await SecureStore.getItemAsync("access_token");
+    if (token) {
+      router.push("/(home)/create");
+    }
+  };
+
   const router = useRouter();
 
   return (

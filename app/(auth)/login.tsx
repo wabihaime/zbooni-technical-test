@@ -17,6 +17,7 @@ import {
   View,
 } from "react-native";
 import * as Yup from "yup";
+import * as SecureStore from "expo-secure-store";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -50,22 +51,23 @@ export default function LoginScreen() {
     values: { email: string; password: string },
     { setErrors }: { setErrors: (errs: Partial<LoginFormValues>) => void }
   ) => {
-    console.log("Values", values);
     try {
       const response = await loginUser({
         username: values.email,
         password: values.password,
       });
-      console.log("Response", response);
 
       if (response.status === 200) {
+        await SecureStore.setItemAsync(
+          "access_token",
+          response.data.access_token
+        );
+
         if (Platform.OS === "web") {
           window.alert("Logged in successfully");
           router.replace("/(home)/create");
         } else {
-          Alert.alert("Logged in successfully", "", [
-            { text: "OK", onPress: () => router.replace("/(home)/create") },
-          ]);
+          router.replace("/(home)/create");
         }
       } else {
         setErrors({

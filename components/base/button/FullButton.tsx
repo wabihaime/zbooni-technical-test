@@ -2,7 +2,7 @@ import { ButtonProps, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 interface FullButtonProps extends ButtonProps {
   title: string;
-  variant: "primary" | "secondary";
+  variant?: "primary" | "secondary";
   onPress: () => void;
 }
 
