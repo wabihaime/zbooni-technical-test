@@ -24,6 +24,7 @@ export function FormField<T extends {}>({
   touched,
   accessory,
   readOnly = false,
+  keyboardType,
   ...rest
 }: FormFieldProps<T>) {
   return (

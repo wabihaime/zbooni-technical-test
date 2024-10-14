@@ -16,7 +16,7 @@ import {
 } from "react-native";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FullButton } from "@/components/base/button";
 import Checkbox from "expo-checkbox";
 import { FormField } from "@/components/base/input/FormField";
@@ -24,6 +24,7 @@ import { FormFieldConfig, RegisterFormValues } from "@/types/auth";
 import { CountryPicker } from "react-native-country-codes-picker";
 import { registerUser } from "@/src/api/register";
 import { UserContext } from "@/src/contexts";
+import { useTranslation } from "react-i18next";
 
 const SignupSchema = Yup.object().shape({
   first_name: Yup.string().required("First name is required"),
@@ -48,6 +49,7 @@ export default function RegisterScreen() {
   const [isAgreed, setIsAgreed] = useState(false);
   const router = useRouter();
   const { setUser } = useContext(UserContext);
+  const { t } = useTranslation();
 
   const basicFields: FormFieldConfig<RegisterFormValues>[] = [
     {
@@ -60,7 +62,7 @@ export default function RegisterScreen() {
     },
     {
       name: "email",
-      placeholder: "Email",
+      placeholder: "Email Address",
       keyboardType: "email-address",
       autoCapitalize: "none",
     },
@@ -151,7 +153,7 @@ export default function RegisterScreen() {
   return (
     <>
       <Header
-        title="Create an Account"
+        title={t("Create an Account")}
         leftOption={
           router.canGoBack() && (
             <TouchableOpacity
@@ -195,7 +197,7 @@ export default function RegisterScreen() {
                   {basicFields.map((field) => (
                     <FormField
                       key={field.name}
-                      placeholder={field.placeholder}
+                      placeholder={t(field.placeholder)}
                       keyboardType={field.keyboardType as KeyboardTypeOptions}
                       onChangeText={handleChange(field.name)}
                       onBlur={handleBlur(field.name)}

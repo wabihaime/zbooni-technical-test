@@ -7,7 +7,7 @@ import { FormFieldConfig } from "@/types/auth/formFieldTypes";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Formik } from "formik";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -19,6 +19,7 @@ import {
 import * as Yup from "yup";
 import * as SecureStore from "expo-secure-store";
 import { UserContext } from "@/src/contexts";
+import { useTranslation } from "react-i18next";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -33,11 +34,12 @@ export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const { setUser } = useContext(UserContext);
+  const { t } = useTranslation();
 
   const fields: FormFieldConfig<LoginFormValues>[] = [
     {
       name: "email",
-      placeholder: "Email",
+      placeholder: "Email Address",
       keyboardType: "email-address",
       autoCapitalize: "none",
     },
@@ -102,7 +104,7 @@ export default function LoginScreen() {
   return (
     <>
       <Header
-        title="Welcome back"
+        title={t("Welcome back")}
         leftOption={
           router.canGoBack() && (
             <TouchableOpacity
@@ -134,7 +136,7 @@ export default function LoginScreen() {
                 {fields.map((field) => (
                   <FormField
                     key={field.name}
-                    placeholder={field.placeholder}
+                    placeholder={t(field.placeholder)}
                     onChangeText={handleChange(field.name)}
                     onBlur={handleBlur(field.name)}
                     value={values[field.name]}
@@ -142,6 +144,8 @@ export default function LoginScreen() {
                     error={errors[field.name]}
                     touched={touched[field.name]}
                     secureTextEntry={field.secureTextEntry}
+                    autoCapitalize={field.autoCapitalize}
+                    keyboardType={field.keyboardType}
                   />
                 ))}
               </View>
