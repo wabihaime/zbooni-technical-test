@@ -1,10 +1,10 @@
 export interface RegisterFormValues {
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
   countryCode: string;
-  phoneNumber: string;
+  phone_number: string;
 }
 
 export interface LoginFormValues {

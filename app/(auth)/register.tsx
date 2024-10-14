@@ -22,12 +22,11 @@ import Checkbox from "expo-checkbox";
 import { FormField } from "@/components/base/input/FormField";
 import { FormFieldConfig, RegisterFormValues } from "@/types/signup";
 import { CountryPicker } from "react-native-country-codes-picker";
-import { getBearerToken } from "@/src/api/auth";
 import { registerUser } from "@/src/api/register";
 
 const SignupSchema = Yup.object().shape({
-  firstName: Yup.string().required("First name is required"),
-  lastName: Yup.string().required("Last name is required"),
+  first_name: Yup.string().required("First name is required"),
+  last_name: Yup.string().required("Last name is required"),
   email: Yup.string()
     .email("Please enter a valid email address")
     .required("Email is required"),
@@ -35,7 +34,7 @@ const SignupSchema = Yup.object().shape({
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
   countryCode: Yup.string().required("Country code is required"),
-  phoneNumber: Yup.string()
+  phone_number: Yup.string()
     .matches(/^[0-9]+$/, "Phone number must be numeric")
     .min(7, "Phone number must be at least 7 digits")
     .max(15, "Phone number cannot exceed 15 digits")
@@ -49,11 +48,11 @@ export default function RegisterScreen() {
   const router = useRouter();
   const basicFields: FormFieldConfig<RegisterFormValues>[] = [
     {
-      name: "firstName",
+      name: "first_name",
       placeholder: "First Name",
     },
     {
-      name: "lastName",
+      name: "last_name",
       placeholder: "Last Name",
     },
     {
@@ -79,25 +78,49 @@ export default function RegisterScreen() {
       accessory: "countryPicker",
     },
     {
-      name: "phoneNumber",
+      name: "phone_number",
       placeholder: "Phone Number",
 
       keyboardType: "phone-pad",
     },
   ];
 
-  const handleSignup = async (values: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    countryCode: string;
-    phoneNumber: string;
-  }) => {
+  const handleSignup = async (
+    values: {
+      first_name: string;
+      last_name: string;
+      email: string;
+      password: string;
+      countryCode: string;
+      phone_number: string;
+    },
+    { setErrors }: { setErrors: (errs: Partial<RegisterFormValues>) => void }
+  ) => {
     try {
-      const response = await registerUser(values);
+      const response = await registerUser({
+        first_name: values.first_name,
+        last_name: values.last_name,
+        email: values.email,
+        password: values.password,
+        phone_number: values.countryCode + values.phone_number,
+      });
+
+      if (response.status === 201) {
+        if (Platform.OS === "web") {
+          window.alert("Account Created");
+          router.replace("/(home)/create");
+        } else {
+          Alert.alert(
+            "Account Created",
+            "Your account has been created successfully. ",
+            [{ text: "OK", onPress: () => router.replace("/(home)/create") }]
+          );
+        }
+      } else {
+        setErrors(response.data);
+      }
     } catch (error: any) {
-      Alert.alert("Error", error.message);
+      console.error("Registration Error Response:", error.response.data);
     }
   };
 
@@ -143,12 +166,12 @@ export default function RegisterScreen() {
         <ScrollView>
           <Formik
             initialValues={{
-              firstName: "",
-              lastName: "",
+              first_name: "",
+              last_name: "",
               email: "",
               password: "",
               countryCode: "",
-              phoneNumber: "",
+              phone_number: "",
             }}
             validationSchema={SignupSchema}
             onSubmit={handleSignup}
@@ -220,7 +243,7 @@ export default function RegisterScreen() {
                       title="Create Account"
                       variant="primary"
                       onPress={handleSubmit}
-                      disabled={!isAgreed && isSubmitting}
+                      disabled={!isAgreed}
                     />
                   )}
                 </View>
