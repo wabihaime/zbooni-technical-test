@@ -1,6 +1,8 @@
-# Welcome to your Expo app 👋
+# Welcome to the Expo technical test 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+
+For this project, I focused on the mobile development over web.
 
 ## Get started
 
@@ -23,28 +25,33 @@ In the output, you'll find options to open the app in a
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Packages used
 
-## Get a fresh project
+> These are packages that don't come with the expo project
 
-When you're ready, run:
+- Form, validation and error display
+  - Yup
+  - Formik
+- API Integration
+  - Axios
+- Internationalization
+  - i18next
+  - expo-localization
+- Country picker
+  - react-native-country-codes-picker
+- Storing of access token
+  - expo Secure Store
 
-```bash
-npm run reset-project
-```
+## State management
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- React Context because of the small scope
 
-## Learn more
+## Routing
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Root
+  - index.ts -> Welcome screen
+  - Stack
+    - login
+    - signup
+  - Tabs
+    - home routes
