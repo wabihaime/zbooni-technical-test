@@ -208,6 +208,7 @@ export default function RegisterScreen() {
                       error={errors[field.name]}
                       touched={touched[field.name]}
                       secureTextEntry={field.secureTextEntry}
+                      autoCapitalize={field.autoCapitalize}
                     />
                   ))}
                 </View>

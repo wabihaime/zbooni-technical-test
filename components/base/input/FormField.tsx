@@ -25,6 +25,7 @@ export function FormField<T extends {}>({
   accessory,
   readOnly = false,
   keyboardType,
+  autoCapitalize,
   ...rest
 }: FormFieldProps<T>) {
   return (
@@ -36,6 +37,8 @@ export function FormField<T extends {}>({
         onBlur={onBlur}
         value={value}
         accessory={accessory}
+        autoCapitalize={autoCapitalize ?? "none"}
+        keyboardType={keyboardType}
         {...rest}
       />
       <View style={styles.errorContainer}>
