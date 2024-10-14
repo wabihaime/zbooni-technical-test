@@ -23,6 +23,7 @@ import { FormField } from "@/components/base/input/FormField";
 import { FormFieldConfig, RegisterFormValues } from "@/types/signup";
 import { CountryPicker } from "react-native-country-codes-picker";
 import { getBearerToken } from "@/src/api/auth";
+import { registerUser } from "@/src/api/register";
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -94,8 +95,7 @@ export default function RegisterScreen() {
     phoneNumber: string;
   }) => {
     try {
-      const token = await getBearerToken();
-      console.log(token);
+      const response = await registerUser(values);
     } catch (error: any) {
       Alert.alert("Error", error.message);
     }
